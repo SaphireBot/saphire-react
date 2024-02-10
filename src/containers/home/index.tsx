@@ -1,19 +1,13 @@
-import "../../index.css";
-import SaphireImage from "../../assets/images/home.png";
-import securutyImage from "../../assets/images/security.png";
 import Counter from "./counter";
 import Systems from "./systems";
 import { Header, Footer } from "../headerAndFooter"
-import { Link } from "react-router-dom";
-import NotFoundImage from "../../assets/images/notfound.png";
 
-export function Home() {
+export default function Home() {
     window.document.title = "Saphire Moon - React";
-
     return (
         <>
             <Header />
-            <section className="home container"><img src={SaphireImage} alt="" />
+            <section className="home container"><img src="/assets/images/home.png" alt="" />
                 <div className="home-content">
                     <h4 className="logo-text shine">Saphire Moon</h4>
                     <p>Todo servidor do Discord precisa de um brilho para iluminar até mesmo os cantos mais escuros.
@@ -30,7 +24,7 @@ export function Home() {
             </section >
             <section className="security">
                 <div className="section-bg">
-                    <div className="security-container container"><img src={securutyImage} alt="securutyImage" />
+                    <div className="security-container container"><img src="/assets/images/security.png" alt="securutyImage" />
                         <div className="security-content">
                             <h6 className="heading">Segurança</h6>
                             <h3 className="title">Protegendo seus dados: Priorizando a segurança!</h3>
@@ -97,26 +91,4 @@ export function Home() {
             <Footer />
         </>
     )
-}
-
-export function NotFound() {
-
-    return (
-        <>
-            <Header />
-            <section className="security padding-top">
-                <div className="security-container container">
-                    <img src={NotFoundImage} alt="NotFoundImage" />
-                    <div className="security-content">
-                        <h6 className="heading">Página não encontrada</h6>
-                        <h3 className="title">As vezes, os caminhos são desconhecidos</h3>
-                        <p>Vou te ajudar, tudo bem? Não tem nada aqui, mas você pode voltar para o início.</p>
-                        <br />
-                        <Link to="/" className="btn">Início</Link>
-                    </div>
-                </div>
-            </section>
-            <Footer />
-        </>
-    );
 }

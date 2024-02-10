@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { Link } from "react-router-dom";
 type setter = React.Dispatch<React.SetStateAction<string>>;
 
 export default function Counter() {
@@ -33,10 +34,10 @@ export default function Counter() {
                         <h6 className="heading">torne uma experiência única</h6>
                         <h3 className="title">Por que me adicionar em seu servidor?</h3>
                         <div className="statics">
-                            <div className="static serv"><span className="number shine" id="guilds">{guilds || "00"}</span><a className="name" id="guilds"
-                                href="https://saphire.one/servers">servidores</a></div>
-                            <div className="static cmd"><span className="number shine" id="commands">{commands || "00"}</span><a className="name" id="commands"
-                                href="https://saphire.one/commands">comandos</a></div>
+                            <div className="static serv"><span className="number shine" id="guilds">{guilds || "00"}</span><Link className="name" id="guilds"
+                                to="/servers">servidores</Link></div>
+                            <div className="static cmd"><span className="number shine" id="commands">{commands || "00"}</span><Link className="name" id="commands"
+                                to="/commands">comandos</Link></div>
                             <div className="static msg"><span className="number shine" id="interactions">{interactions || "00"}</span><span
                                 className="name">interações</span></div>
                         </div>

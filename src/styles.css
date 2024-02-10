@@ -189,6 +189,7 @@ nav.small {
     border: 2px solid var(--color-white);
     border-radius: 50px;
     transition: all 300ms ease;
+
 }
 
 .nav-button a:hover {
@@ -466,7 +467,8 @@ nav.small {
     font-size: 1.5625rem;
     background: var(--box-color);
     border-radius: 15px;
-    width: fit-content;
+    width: 65px;
+    height: 65px;
 }
 
 .system-box .icon-img {
@@ -1287,7 +1289,7 @@ summary .details .desc {
 
 .bug-content form select {
     padding-right: 30px;
-    background: url('./assets/icons/setinha.png') no-repeat center right;
+    background: url('/public/assets/icons/setinha.png') no-repeat center right;
     background-size: 20px 20px;
     background-position: calc(100% - 20px) center;
 }
@@ -1592,10 +1594,12 @@ summary .details .desc {
     }
 }
 
-@media (max-width: 660px) {
+@media (max-width: 900px) {
     .menu-icon {
         display: block !important;
         z-index: 40;
+        background: none;
+        border: none;
     }
 
     .navbar {
@@ -1608,14 +1612,18 @@ summary .details .desc {
         display: flex;
         flex-direction: column;
         align-items: center;
-        padding: 65px 20px;
-        transition: 0.5s all cubic-bezier(0.075, 0.82, 0.165, 1);
+        padding: 10%;
+        transition: 0.7s all cubic-bezier(0.075, 0.82, 0.165, 1);
         z-index: 30;
+        gap: 15px;
     }
 
     .navbar.open-menu {
+        position: fixed;
         right: 0;
-        transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+        border-radius: 5%;
+        transition: all 0.7s cubic-bezier(0.075, 0.82, 0.165, 1);
+        padding-bottom: 1%;
     }
 
     .sub-profile-wrapper {
