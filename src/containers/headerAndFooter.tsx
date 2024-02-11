@@ -8,7 +8,7 @@ import { HiMenuAlt3 } from "react-icons/hi";
 import { MdOutlineClose } from "react-icons/md";
 import { useQuery } from "@tanstack/react-query";
 // const SaphireBotLokinLinkUrl = "https://discord.com/api/oauth2/authorize?client_id=912509487984812043&redirect_uri=https%3A%2F%2Freact.saphire.one%2Fredirect&response_type=token&scope=guilds%20email%20identify";
-const SaphireBotLokinLinkUrl = "https://discord.com/api/oauth2/authorize?client_id=912509487984812043&response_type=token&redirect_uri=https%3A%2F%2Freact.saphire.one%2Fredirect&scope=guilds+identify+email";
+const SaphireBotLokinLinkUrl = "https://discord.com/api/oauth2/authorize?client_id=912509487984812043&response_type=token&redirect_uri=https%3A%2F%2Flocalhost%3A8080%2Fredirect&scope=identify+guilds+email";
 
 export function Header() {
 
