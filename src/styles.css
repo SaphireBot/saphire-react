@@ -595,7 +595,7 @@ footer {
     gap: 25px;
     justify-content: center;
     padding: 0 0 1.5625rem;
-    position: static;
+    position: relative;
     bottom: 0;
     width: 100%;
 }
