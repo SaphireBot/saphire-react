@@ -7,17 +7,18 @@ const [
     expires_in,
     error
 ] = [
-        fragment.get('access_token'),
-        fragment.get('token_type'),
-        fragment.get('expires_in'),
-        fragment.get('error')
+        fragment.get("access_token"),
+        fragment.get("token_type"),
+        fragment.get("expires_in"),
+        fragment.get("error")
     ];
 
 export default function RedirectBase() {
 
-    console.log(access_token, token_type, expires_in, error);
-    if (redirectPath) {
-        fetch('https://discord.com/api/users/@me', {
+    if (access_token && token_type && expires_in) {
+        console.log(access_token, token_type, expires_in, error);
+        history.pushState(null, "", location.pathname || "/")
+        fetch("https://discord.com/api/users/@me", {
             method: "GET",
             headers: { authorization: `${token_type} ${access_token}` }
         })
@@ -27,7 +28,7 @@ export default function RedirectBase() {
                 user.accessToken = access_token;
                 user.expiresIn = expires_in;
                 user.loggedAt = Date.now();
-                localStorage.setItem('userData', JSON.stringify(user));
+                localStorage.setItem("user", JSON.stringify(user));
                 save({
                     id: user.id,
                     Tokens: {
@@ -41,7 +42,7 @@ export default function RedirectBase() {
                     return <Navigate to={redirectPath} />;
                 }
             })
-            .catch(() => window.location.href = "https://saphire.one/");
+            .catch(() => <Navigate to="/" />);
     } else return <Navigate to="/" />;
 
 }

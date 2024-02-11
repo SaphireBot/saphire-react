@@ -210,6 +210,11 @@ nav.small {
     background: #ffffff1a;
 }
 
+.blured {
+    filter: blur(4px);
+    transition: all 300ms ease;
+}
+
 .sub-profile-wrapper {
     display: none;
     opacity: 0;
@@ -221,15 +226,16 @@ nav.small {
     position: absolute;
     top: 100px;
     right: 0;
-    transition: all 300ms;
 }
 
-.sub-profile-wrapper.active {
+.active {
     opacity: 1;
     display: block;
+    /* z-index: -1; */
 }
 
 .sub-profile-wrapper .profile-wrapper {
+    transition: all 300ms ease;
     display: flex;
     align-items: center;
     gap: 10px;
