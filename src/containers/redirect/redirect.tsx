@@ -1,5 +1,4 @@
 import { Navigate } from "react-router-dom";
-const redirectPath = localStorage.getItem("redirect");
 const fragment = new URLSearchParams(window.location.hash.slice(1));
 const [
     access_token,
@@ -13,48 +12,37 @@ const [
         fragment.get("error")
     ];
 
+// let path = localStorage.getItem("redirect") || "/";
+// if (path?.includes("redirect")) path = "/";
+// if (!path?.startsWith("/")) path = `/${path}`;
+
 export default function RedirectBase() {
 
-    if (access_token && token_type && expires_in) {
-        console.log(access_token, token_type, expires_in, error);
-        history.pushState(null, "", location.pathname || "/")
-        fetch("https://discord.com/api/users/@me", {
-            method: "GET",
-            headers: { authorization: `${token_type} ${access_token}` }
-        })
-            .then(res => res.json())
-            .then(user => {
-                user.tokenType = token_type;
-                user.accessToken = access_token;
-                user.expiresIn = expires_in;
-                user.loggedAt = Date.now();
-                localStorage.setItem("user", JSON.stringify(user));
-                save({
-                    id: user.id,
-                    Tokens: {
-                        access_token,
-                        token_type,
-                        expires_in
-                    }
-                });
-                if (redirectPath) {
-                    localStorage.removeItem("redirect");
-                    return <Navigate to={redirectPath} />;
-                }
-            })
-            .catch(() => <Navigate to="/" />);
-    } else return <Navigate to="/" />;
+    if (location.href.includes("logout")) {
+        localStorage.clear();
+        return (<Navigate to="/" />)
+    }
 
+    if (access_token && token_type && expires_in)
+        return SetTokenWarnAndNavegate();
+
+    // if (path) localStorage.removeItem("redirect");
+    // return (<Navigate to={path} />);
+    return (<Navigate to="/" />);
 }
 
-async function save(data: unknown) {
-    return await fetch("https://api.saphire.one/save_login", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
-    })
-        .then(() => console.log("Login complete successfully"))
-        .catch(() => console.log("fail to save data"));
+function SetTokenWarnAndNavegate() {
+    const token = {
+        access_token: access_token,
+        token_type: token_type,
+        expires_in: expires_in,
+        error: error
+    };
+    history.pushState(null, "", "/");
+    console.log(token);
+    localStorage.setItem("token", JSON.stringify(token));
+    console.log("Message from developer: Eai coisa fofa, tudo bom? Se você entrou aqui por que alguém pediu, tenha cuidado! Os dados acima são SEUS e apenas SEUS! O token acima permite que a Saphire consiga acesso aos seus dados do Discord, como seu email, seus servidores e seus dados públicos, como nome, ID, avatar etc. Não passe seus dados a ninguém, beleza? Se você é um desenvolvedor, seja muito bem vindo ao nosso console.log() do site da Saphire Moon. Estou sempre enviando mensagens do que está acontecendo no site e você pode ver as coisas funcionando por de baixo dos panos. Ha! Se você descobriu algum bug ou algo de errado, fale comigo por favor. Meu username no Discord é \"rodycouto\". obrigadoo <3")
+
+    // if (path) localStorage.removeItem("redirect");
+    return (<Navigate to="/" />);
 }

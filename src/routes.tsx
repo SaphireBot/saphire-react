@@ -1,6 +1,7 @@
 import NotFound from "./containers/NotFound";
 import Home from "./containers/home";
 import Redirect from "./containers/redirect/redirect";
+import Unauthorized from "./containers/statics/unauthorized";
 
 export default [
     {
@@ -8,8 +9,12 @@ export default [
         element: <Home />,
     },
     {
-        path: "/redirect",
+        path: "/redirect/*",
         element: <Redirect />
+    },
+    {
+        path: "/unauthorized",
+        element: <Unauthorized />
     },
     {
         path: "*",

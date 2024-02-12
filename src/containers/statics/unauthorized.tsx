@@ -1,18 +1,14 @@
-import Helmet from "react-helmet";
-import { Header, Footer } from "../headerAndFooter";
 import { Link } from "react-router-dom";
+import Header from "../global/header";
+import { Footer } from "../global/footer";
 const unauthorizedImage = "/assets/images/unauthorized.png";
 
-export function Unauthorized() {
+export default function Unauthorized() {
+    localStorage.setItem("redirect", "/");
     return (
         <>
             <Header />
-            <Helmet>
-                <meta name="description" content="Você não está autorizado a prosseguir. Caso esteja com problemas, chame o suporte." />
-                <meta name="title" content="Acesso não autorizado" />
-                <meta name="image" content="https://saphire.one/images/saphiremoon.png" />
-            </Helmet>
-            <section className="security padding-top">
+            <div className="security padding-top">
                 <div className="security-container container">
                     <img src={unauthorizedImage} alt="unauthorizedImage" />
                     <div className="security-content">
@@ -24,7 +20,7 @@ export function Unauthorized() {
                         <Link to="/" className="btn">Início</Link>
                     </div>
                 </div>
-            </section>
+            </div>
             <Footer />
         </>
     )
