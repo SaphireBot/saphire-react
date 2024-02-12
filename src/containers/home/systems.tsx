@@ -7,7 +7,7 @@ export default function Systems() {
     const systemMore = () => setActive(!active);
 
     return (
-        <>
+        <section className="system container">
             <div className="system-heading">
                 <div className="system-title">
                     <h6 className="heading">sistemas automáticos</h6>
@@ -20,7 +20,7 @@ export default function Systems() {
             <div className="system-container" id="systems-container">
                 <AllSystems active={active} />
             </div>
-        </>
+        </section>
     );
 }
 

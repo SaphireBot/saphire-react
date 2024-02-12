@@ -29,7 +29,6 @@ export default function Counter() {
             commands: data?.commands || 0,
             interactions: data?.interactions || 0
         };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data]);
 
     window.onload = fetchData;

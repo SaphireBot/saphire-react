@@ -1,12 +1,9 @@
 import { Link } from "react-router-dom";
-import Header from "./global/header";
-import { Footer } from "./global/footer";
 
 export default function NotFound() {
     localStorage.setItem("redirect", "/");
     return (
         <>
-            <Header />
             <section className="security padding-top">
                 <div className="security-container container">
                     <img src="/assets/images/notfound.png" alt="NotFoundImage" />
@@ -19,7 +16,6 @@ export default function NotFound() {
                     </div>
                 </div>
             </section>
-            <Footer />
         </>
     );
 }

@@ -3,7 +3,7 @@ import { FaDiscord, FaGear, FaGithub } from "react-icons/fa6";
 import { IoDocumentTextOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
 
-export function Footer() {
+export default function Footer() {
     return (
         <footer>
             <div className="socials">

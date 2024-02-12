@@ -22,7 +22,14 @@ export default function Header() {
     const [ButtonOrUserOptions, setButtonOrUserOptions] = useState<JSX.Element>(<Loading sizeInPx={30} />);
     const [menuNavbar, setMenuNavbar] = useState<string>("navbar");
 
-    const userOptionsJSX = () => <UserOptions menuNavbar={menuNavbar} setMenuNavbar={setMenuNavbar} />;
+    useEffect(() => {
+        if (!localStorage.getItem("user") && user?.id) return setUser({} as User);
+        return setButtonOrUserOptions(
+            user?.id
+                ? <UserOptions menuNavbar={menuNavbar} setMenuNavbar={setMenuNavbar} />
+                : <JoinButton />
+        )
+    }, [user, menuNavbar]);
 
     useEffect(() => {
 
@@ -30,43 +37,32 @@ export default function Header() {
         if (storage?.id || user?.id) {
             console.log("Message from developer: Eai! Bem-vindo de volta. Como de costume, aqui está os dados que temos sobre você.", storage);
             setUser(storage);
-            return setButtonOrUserOptions(userOptionsJSX());
+            return;
         }
 
-        if (!token?.access_token || !token?.token_type)
-            return setButtonOrUserOptions(<JoinButton />);
+        if (!token?.access_token || !token?.token_type) return;
 
+        const controller = new AbortController();
         fetch("https://discord.com/api/users/@me", {
             method: "GET",
-            headers: { authorization: `${token.token_type} ${token.access_token}` }
+            headers: { authorization: `${token.token_type} ${token.access_token}` },
+            signal: controller.signal
         })
             .then(res => res.json())
             .then(user => {
                 if (user?.id) {
                     localStorage.setItem("user", JSON.stringify(user));
                     setUser(user);
-                    setButtonOrUserOptions(userOptionsJSX());
-                    console.log("Message from developer: Para desencargo de consciência, esses são os dados que nós pegamos de você, tudo bem? Se você olhar bem, não tem nada demais. Pode relaxar e curtir o site <3", user)
+                    console.log("Message from developer: Para desencargo de consciência, esses são os dados que nós pegamos de você, tudo bem? Se você olhar bem, não tem nada demais. Pode relaxar e curtir o site <3", user);
                     return user;
                 }
                 return user;
             })
-            .finally(() => {
-                if (!user?.id) return setButtonOrUserOptions(<JoinButton />);
-                if (user?.id) return save(user, token);
-            })
-            .catch(err => {
-                console.log(err);
-                return setButtonOrUserOptions(<JoinButton />);
-            })
-        return;
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+            .finally(() => save(user, token))
+            .catch(console.log);
 
-    // useEffect(() => {
-    //     if (user?.id) setButtonOrUserOptions(<UserOptions menuNavbar={menuNavbar} setMenuNavbar={setMenuNavbar} />);
-    //     return setButtonOrUserOptions(<JoinButton />)
-    // }, [user, menuNavbar]);
+        return () => controller.abort();
+    }, []);
 
     window.onscroll = () => {
         if (window.scrollY >= 80 && active === "bg active") return;
@@ -92,17 +88,20 @@ export default function Header() {
         </header >
     );
 }
+
 function save(user: any, token: any) {
-    if (!user?.id || !token?.access_token || !token?.token_type) return
+    if (!user?.id || !token?.access_token || !token?.token_type) return;
 
     user.tokenType = token?.token_type;
     user.accessToken = token?.access_token;
     user.expiresIn = token?.expires_in;
     user.loggedAt = Date.now();
-    console.log("Login complete successfully.", user)
+    console.log("Login complete successfully.", user);
 
+    const controller = new AbortController();
     fetch("https://api.saphire.one/save_login", {
         method: "POST",
+        signal: controller.signal,
         headers: {
             "Content-Type": "application/json"
         },
@@ -117,5 +116,5 @@ function save(user: any, token: any) {
     })
         .catch(err => console.log("Fail to save data", err));
 
-    return;
+    return () => controller.abort();
 }

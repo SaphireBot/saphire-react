@@ -1,13 +1,10 @@
 import { Link } from "react-router-dom";
-import Header from "../global/header";
-import { Footer } from "../global/footer";
 const unauthorizedImage = "/assets/images/unauthorized.png";
 
 export default function Unauthorized() {
     localStorage.setItem("redirect", "/");
     return (
         <>
-            <Header />
             <div className="security padding-top">
                 <div className="security-container container">
                     <img src={unauthorizedImage} alt="unauthorizedImage" />
@@ -21,7 +18,6 @@ export default function Unauthorized() {
                     </div>
                 </div>
             </div>
-            <Footer />
         </>
     )
 }
