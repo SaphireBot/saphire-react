@@ -1,5 +1,5 @@
 import { RouteObject } from "react-router-dom";
-import NotFound from "./containers/NotFound";
+import NotFound from "./containers/statics/NotFound";
 import Home from "./containers/home";
 import Redirect from "./containers/redirect/redirect";
 import Unauthorized from "./containers/statics/unauthorized";
