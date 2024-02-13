@@ -66,7 +66,7 @@ export default function Counter() {
         </section>
     );
 
-    async function fetchData() {
+    async function fetchData(): Promise<NodeJS.Timeout> {
         const response = await query();
 
         if (
