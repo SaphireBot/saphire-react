@@ -11,14 +11,21 @@
   },
   "dependencies": {
     "@tanstack/react-query": "^5.18.1",
+    "better-sqlite3": "^9.4.1",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
+    "dotenv": "^16.4.4",
     "express": "^4.18.2",
     "http": "^0.0.1-security",
+    "quick.db": "^9.1.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-helmet": "^6.1.0",
+    "react-helmet-async": "^2.0.4",
     "react-icons": "^5.0.1",
-    "react-router-dom": "^6.22.0"
+    "react-router-dom": "^6.22.0",
+    "socket.io": "^4.7.4",
+    "socket.io-client": "^4.7.4"
   },
   "devDependencies": {
     "@types/react": "^18.2.55",

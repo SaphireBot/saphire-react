@@ -11,6 +11,7 @@
 # production
 /build
 /dist
+/cache.sqlite
 
 # misc
 .DS_Store

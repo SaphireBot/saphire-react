@@ -1,37 +1,50 @@
-import { useCallback, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import Loading from "../global/loading";
+import socket from "../../websocket/websocket";
 type setter = React.Dispatch<React.SetStateAction<string>>;
-let oldData = {
-    guilds: 0,
-    commands: 0,
-    interactions: 0
-}
 
 export default function Counter() {
+
+    const location = useLocation();
     const [guilds, setGuilds] = useState("");
     const [commands, setCommands] = useState("");
     const [interactions, setInteractions] = useState("");
-    const [data, setData] = useState({ guilds: 0, commands: 0, interactions: 0 });
+    const [viewers, setViewers] = useState("");
+    const [oldData, setOldData] = useState({ guilds: -1, commands: -1, interactions: -1, viewers: -1 });
+    const [data, setData] = useState({ guilds: 0, commands: 0, interactions: 0, viewers: 0 });
 
-    const query = useCallback(async () => {
-        return await fetch("https://api.saphire.one/home", { method: "GET" })
-            .then(res => res.json())
-            .catch(() => { });
-    }, [])
+    useEffect(() => {
+        if (location.pathname !== "/") return;
+        if (!socket.hasListeners("home"))
+            socket.on("home", value => {
+                if (value) setData(value);
+            });
 
-    useMemo(() => {
+        socket
+            .timeout(3000)
+            .emitWithAck("home", "get")
+            .then(value => {
+                if (value) setData(value)
+            })
+            .catch(() => { })
+
+    }, [location.pathname])
+
+    useEffect(() => {
+        if (location.pathname !== "/") return;
         numberCount(oldData?.guilds || 0, data?.guilds || 0, setGuilds);
         numberCount(oldData?.commands || 0, data?.commands || 0, setCommands);
         numberCount(oldData?.interactions || 0, data?.interactions || 0, setInteractions);
-        oldData = {
+        numberCount(oldData?.viewers || 0, data?.viewers || 0, setViewers);
+
+        setOldData({
+            viewers: data?.viewers || 0,
             guilds: data?.guilds || 0,
             commands: data?.commands || 0,
             interactions: data?.interactions || 0
-        };
-    }, [data]);
-
-    window.onload = fetchData;
+        });
+    }, [data.viewers, data.commands, data.guilds, data.interactions]);
 
     return (
         <section className="invite">
@@ -47,8 +60,10 @@ export default function Counter() {
                                 to="/commands">comandos</Link></div>
                             <div className="static msg"><span className="number shine" id="interactions">{interactions || <Loading sizeInPx={25} />}</span><span
                                 className="name">interações</span></div>
+                            <div className="static msg"><span className="number shine" id="viewers">{viewers || <Loading sizeInPx={25} />}</span><span
+                                className="name">👀</span></div>
                         </div>
-                        <h6 className="h6Text">*Os dados acima são atualizados a cada 5 segundos</h6>
+                        <h6 className="h6Text">*Os dados acima são atualizados em tempo real</h6>
                     </div>
                     <div className="invite-right">
                         <p>Diversão e Entretenimento, Customização, Jogos, Moderação Eficiente, Recursos Úteis, Constante
@@ -58,7 +73,7 @@ export default function Counter() {
                         <p>Por algum motivo não tem o que você quer? Fale com o suporte que vamos tentar adicionar tudo o
                             que te agrada.</p>
                         <br />
-                        <p>Se mais de 85 comandos, diversos sistemas e jogos não é motivo para me adicionar no seu servidor,
+                        <p>Se mais de{commands || 0} comandos, diversos sistemas e jogos não é motivo para me adicionar no seu servidor,
                             não sei o que mais te agrada.</p><br />
                     </div>
                 </div>
@@ -66,25 +81,8 @@ export default function Counter() {
         </section>
     );
 
-    async function fetchData(): Promise<NodeJS.Timeout> {
-        const response = await query();
-
-        if (
-            (response?.guilds || 0) === (oldData?.guilds || 0)
-            && (response?.commands || 0) === (oldData?.commands || 0)
-            && (response?.interactions || 0) === (oldData?.interactions || 0)
-        ) return setTimeout(() => fetchData(), 1000 * 10);
-
-        setData({
-            guilds: response?.guilds || 0,
-            commands: response?.commands || 0,
-            interactions: response?.interactions || 0
-        })
-
-        return setTimeout(() => fetchData(), 1000 * 5);
-    }
-
     function numberCount(before: number, after: number, set: setter) {
+        if (before === after) return;
 
         const minOrMax = before < after ? Math.min : Math.max;
         const difference = after - before;
