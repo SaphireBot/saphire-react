@@ -3,6 +3,7 @@ import NotFound from "./containers/statics/NotFound";
 import Home from "./containers/home";
 import Redirect from "./containers/redirect/redirect";
 import Unauthorized from "./containers/statics/unauthorized";
+import Status from "./containers/status/index";
 import Layout from "./layout";
 
 export default [
@@ -19,6 +20,16 @@ export default [
     {
         path: "/unauthorized",
         element: Layout(<Unauthorized />),
+        errorElement: Layout(<NotFound />)
+    },
+    // {
+    //     path: "/commands",
+    //     element: Layout(<Commands />),
+    //     errorElement: Layout(<NotFound />)
+    // },
+    {
+        path: "/status",
+        element: Layout(<Status />),
         errorElement: Layout(<NotFound />)
     },
     {

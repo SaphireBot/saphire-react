@@ -12,9 +12,9 @@ const [
         fragment.get("error")
     ];
 
-// let path = localStorage.getItem("redirect") || "/";
-// if (path?.includes("redirect")) path = "/";
-// if (!path?.startsWith("/")) path = `/${path}`;
+let path = localStorage.getItem("redirect") || "/";
+if (path?.includes("redirect")) path = "/";
+if (!path?.startsWith("/")) path = `/${path}`;
 
 export default function RedirectBase() {
 
@@ -26,9 +26,9 @@ export default function RedirectBase() {
     if (access_token && token_type && expires_in)
         return SetTokenWarnAndNavegate();
 
-    // if (path) localStorage.removeItem("redirect");
-    // return (<Navigate to={path} />);
-    return (<Navigate to="/" />);
+    if (path) localStorage.removeItem("redirect");
+    return (<Navigate to={path} />);
+    // return (<Navigate to="/" />);
 }
 
 function SetTokenWarnAndNavegate() {

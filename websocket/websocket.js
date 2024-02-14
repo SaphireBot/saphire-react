@@ -3,7 +3,10 @@ import { Server, Socket } from "socket.io";
 import { env } from "process";
 import { QuickDB } from "quick.db";
 import { io } from "socket.io-client";
+import { GetStatus, GeneralStatus } from "./status.js";
+const statusPageInterval = new Map();
 const SQLite = new QuickDB({ filePath: "cache.sqlite" });
+GetStatus();
 
 export default class SocketServer extends Server {
 
@@ -83,10 +86,21 @@ export default class SocketServer extends Server {
         });
 
         socket.once("disconnect", () => {
+            clearInterval(statusPageInterval.get(socket.id));
+            statusPageInterval.delete(socket.id)
             this.refreshHomeStatus();
         });
 
+        socket.on("ping", (_, callback) => callback(true));
         socket.on("home", (_, callback) => callback(this.home));
+        socket.on("status_page", (_, callback) => {
+            callback(GeneralStatus);
+
+            if (statusPageInterval.has(socket.id)) return;
+            const interval = setInterval(() => socket.emit("status_page", GeneralStatus), 3000);
+            statusPageInterval.set(socket.id, interval);
+            return;
+        });
     }
 
     refreshHomeStatus() {
